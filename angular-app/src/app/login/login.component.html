@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+    <div class="card card-signin my-5">
+      <div class="card-body">
+        <h5 class="card-title text-center">Sign In</h5>
+          <div class="form-label-group">
+              <label for="inputEmail">User Name</label>
+            <input [(ngModel)] ="model.user" type="email" id="inputEmail" class="form-control" placeholder="User Name" required autofocus>
+          </div>
+
+          <div class="form-label-group">
+              <label for="inputPassword">Password</label>
+            <input [(ngModel)] ="model.pass" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          </div>
+          <button (click)="open()" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+      </div>
+    </div>
+  </div>
+</div>

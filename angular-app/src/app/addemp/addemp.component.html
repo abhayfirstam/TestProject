@@ -1,0 +1,34 @@
+
+<h5>{{addEdit}}</h5>
+<div class="form-row">
+   
+    <div class="form-group col-md-6">
+      <label for="fname">First Name*</label>
+      <input [(ngModel)] ="emp.firstName" type="text" class="form-control" id="fname" placeholder="First Name" required>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="lname">Last Name*</label>
+        <input [(ngModel)] ="emp.lastName" required type="text" class="form-control" id="lname" placeholder="Last Name">
+      </div>
+  </div>
+  <div class="form-group">
+    <label for="desig">Designation*</label>
+    <input [(ngModel)] ="emp.designation" required type="text" class="form-control" id="desig" placeholder="Designation">
+  </div>
+  <div class="mgname">
+    <label for="inputAddress2">Manager Name*</label>
+    <input [(ngModel)] ="emp.managerName" required type="text" class="form-control" id="mgname" placeholder="Manager Name">
+  </div>
+  <div class="form-row">
+      <div class="form-group col-md-6">
+          <label for="etype">Employee Type*</label>
+          <input [(ngModel)] ="emp.employeeType" required type="number" class="form-control" id="etype">
+        </div>
+    <div class="form-group col-md-6">
+      <label for="note">Notes</label>
+      <input [(ngModel)] ="emp.note" type="text" class="form-control" id="note">
+    </div>
+  </div>
+  
+  <button *ngIf="add" (click)="addEmp()" type="button" class="btn btn-primary">Add Employee</button>
+  <button *ngIf="update" (click)="updateEmp()" type="button" class="btn btn-primary">Update Employee</button>
