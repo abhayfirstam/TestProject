@@ -13,7 +13,18 @@ export class AddempComponent implements OnInit {
   add: boolean = false;
   update: boolean = false;
   addEdit:string;
+  eType:[    
+    {    
+      "id": 1,    
+      "name": "Permanent"    
+    },    
+    {    
+      "id": 1035,    
+      "name": "Temporary"    
+    }   
+  ]; 
   ngOnInit() {
+    this.emp.employeeType=1;
     if (this.route.snapshot.queryParamMap['params']['id']) {
       this.employeeService.getEmployeeById(this.route.snapshot.queryParamMap['params']['id'])
         .subscribe(

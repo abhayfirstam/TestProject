@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,10 +7,11 @@ import { Component,OnInit } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
-  currentuser:string='Abhay';
-
+  currentuser: string = 'Guest';
   ngOnInit() {
-    
+    if (localStorage.getItem('currentUser')) {
+      this.currentuser= JSON.parse(localStorage.getItem('currentUser')).firstName;
+    }
   }
   collapse() {
     this.isExpanded = false;
