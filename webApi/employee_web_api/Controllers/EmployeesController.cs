@@ -25,23 +25,50 @@ namespace employee_web_api.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            //return await _context.Employees.ToListAsync();
+
+            try
+            {
+                var employees = await _context.Employees.ToListAsync();
+                if (employees == null)
+                {
+                    return NotFound();
+                }
+                return Ok(employees);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult> GetEmployee(int? id)
         {
-            var employee = await _context.Employees.FindAsync(id);
 
-            if (employee == null)
+            if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            return employee;
+            try
+            {
+                var employee = await _context.Employees.FindAsync(id);
+
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(employee);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // PUT: api/Employees/5
@@ -76,36 +103,78 @@ namespace employee_web_api.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult> PostEmployee(Employee employee)
         {
-            var data= _context.Employees.OrderByDescending(u => u.Id).FirstOrDefault();
-            if (data !=null)
+
+            if (ModelState.IsValid)
             {
-                employee.Id = data.Id + 1;
+                try
+                {
+                    var data = _context.Employees.OrderByDescending(u => u.Id).FirstOrDefault();
+                    if (data != null)
+                    {
+                        employee.Id = data.Id + 1;
+                    }
+                    else
+                    {
+                        employee.Id = 1;
+                    }
+                    _context.Employees.Add(employee);
+                    await _context.SaveChangesAsync();
+                    if (employee.Id > 0)
+                    {
+                        return Ok(employee.Id);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception)
+                {
+
+                    return BadRequest();
+                }
+
             }
-            else
-            {
-                employee.Id =1;
-            }
-            _context.Employees.Add(employee);
-                await _context.SaveChangesAsync();
-            return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
+
+            return BadRequest();
         }
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Employee>> DeleteEmployee(int id)
+        public async Task<ActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            try
             {
-                return NotFound();
+                var employee = await _context.Employees.FindAsync(id);
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _context.Employees.Remove(employee);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
 
-            return employee;
+            //var employee = await _context.Employees.FindAsync(id);
+            //if (employee == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //_context.Employees.Remove(employee);
+            //await _context.SaveChangesAsync();
+
+            //return employee;
         }
 
         private bool EmployeeExists(int id)
